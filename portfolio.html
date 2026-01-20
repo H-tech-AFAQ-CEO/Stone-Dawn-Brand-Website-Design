@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Stone & Dawn</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --clay: #C9A88A;
+            --sand: #E8D5C4;
+            --soft-gold: #D4AF7A;
+            --muted-green: #A8B5A0;
+            --gentle-neutral: #F5F1ED;
+            --dark-earth: #5C4A3D;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-earth);
+            background: var(--gentle-neutral);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(245, 241, 237, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1.5rem 5%;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            box-shadow: 0 2px 20px rgba(92, 74, 61, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: var(--dark-earth);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-earth);
+            font-size: 0.95rem;
+            font-weight: 400;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a.active {
+            color: var(--soft-gold);
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--soft-gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        /* Portfolio Hero */
+        .portfolio-hero {
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--muted-green) 0%, var(--clay) 100%);
+            text-align: center;
+        }
+
+        .portfolio-hero-content {
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .portfolio-hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .portfolio-hero p {
+            font-size: 1.2rem;
+            color: var(--sand);
+            margin-bottom: 2rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+        }
+
+        /* Portfolio Content */
+        .portfolio-content {
+            padding: 8rem 5%;
+            background: var(--white);
+        }
+
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 2rem;
+            background: var(--gentle-neutral);
+            color: var(--dark-earth);
+            border: 2px solid var(--sand);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--soft-gold);
+            color: var(--white);
+            border-color: var(--soft-gold);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .portfolio-item {
+            position: relative;
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.6s ease;
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(92, 74, 61, 0.9), transparent);
+            padding: 2rem;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            transform: translateY(0);
+        }
+
+        .portfolio-overlay h3 {
+            color: var(--white);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .portfolio-overlay p {
+            color: var(--sand);
+            font-size: 0.9rem;
+        }
+
+        .portfolio-overlay .category {
+            display: inline-block;
+            background: var(--soft-gold);
+            color: var(--white);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Journal Section */
+        .journal {
+            padding: 8rem 5%;
+            background: var(--gentle-neutral);
+        }
+
+        .journal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .journal-item {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(92, 74, 61, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .journal-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .journal-image {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .journal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .journal-item:hover .journal-image img {
+            transform: scale(1.1);
+        }
+
+        .journal-content {
+            padding: 2rem;
+        }
+
+        .journal-meta {
+            font-size: 0.9rem;
+            color: var(--clay);
+            margin-bottom: 1rem;
+        }
+
+        .journal-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark-earth);
+        }
+
+        .journal-content p {
+            color: var(--dark-earth);
+            opacity: 0.8;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .read-more {
+            color: var(--soft-gold);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: var(--clay);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-earth);
+            color: var(--sand);
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-about h3 {
+            color: var(--soft-gold);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .footer-about p {
+            opacity: 0.8;
+            line-height: 1.8;
+        }
+
+        .footer-links h4 {
+            color: var(--soft-gold);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--sand);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            display: block;
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--soft-gold);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            color: var(--sand);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--soft-gold);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(232, 213, 196, 0.2);
+            padding-top: 2rem;
+            text-align: center;
+            opacity: 0.7;
+        }
+
+        .developer-credit {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--soft-gold);
+        }
+
+        /* Chatbot */
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+        }
+
+        .chatbot-button {
+            background: var(--soft-gold);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-window {
+            display: none;
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 300px;
+            height: 400px;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: var(--soft-gold);
+            color: var(--white);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .chat-messages {
+            padding: 1rem;
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        .chat-input {
+            border-top: 1px solid var(--sand);
+            padding: 1rem;
+            display: flex;
+        }
+
+        .chat-input input {
+            flex: 1;
+            border: none;
+            outline: none;
+        }
+
+        .chat-input button {
+            background: var(--soft-gold);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .journal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .portfolio-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-buttons {
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">Stone & Dawn</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#philosophy">Philosophy</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="portfolio.html" class="active">Portfolio</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Portfolio Hero -->
+    <section class="portfolio-hero">
+        <div class="portfolio-hero-content" data-aos="fade-up">
+            <h1>Our Work</h1>
+            <p>Stories of transformation brought to life through design</p>
+        </div>
+    </section>
+
+    <!-- Portfolio Content -->
+    <section class="portfolio-content">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Recent Projects</h2>
+                <p>Explore our portfolio of transformative design work</p>
+            </div>
+            <div class="filter-buttons" data-aos="fade-up">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="branding">Branding</button>
+                <button class="filter-btn" data-filter="web">Web Design</button>
+                <button class="filter-btn" data-filter="print">Print</button>
+                <button class="filter-btn" data-filter="wellness">Wellness</button>
+            </div>
+            <div class="portfolio-grid">
+                <div class="portfolio-item" data-category="wellness" data-aos="fade-up">
+                    <a href="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&h=600&fit=crop" data-lightbox="portfolio" data-title="Healing Spaces - Wellness Center Rebrand">
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&h=600&fit=crop" alt="Brand Identity Project">
+                        <div class="portfolio-overlay">
+                            <h3>Healing Spaces</h3>
+                            <p>Wellness Center Rebrand</p>
+                            <span class="category">Wellness</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="portfolio-item" data-category="print" data-aos="fade-up" data-aos-delay="100">
+                    <a href="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=800&h=600&fit=crop" data-lightbox="portfolio" data-title="Stories of Resilience - Editorial Design & Publishing">
+                        <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=800&h=600&fit=crop" alt="Editorial Design">
+                        <div class="portfolio-overlay">
+                            <h3>Stories of Resilience</h3>
+                            <p>Editorial Design & Publishing</p>
+                            <span class="category">Print</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="portfolio-item" data-category="web" data-aos="fade-up" data-aos-delay="200">
+                    <a href="https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=800&h=600&fit=crop" data-lightbox="portfolio" data-title="Journey Within - Therapeutic Practice Website">
+                        <img src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=800&h=600&fit=crop" alt="Digital Experience">
+                        <div class="portfolio-overlay">
+                            <h3>Journey Within</h3>
+                            <p>Therapeutic Practice Website</p>
+                            <span class="category">Web</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="portfolio-item" data-category="branding" data-aos="fade-up">
+                    <a href="https://images.unsplash.com/photo-1558655146-364adaf1fcc9?w=800&h=600&fit=crop" data-lightbox="portfolio" data-title="Mindful Living - Holistic Brand Identity">
+                        <img src="https://images.unsplash.com/photo-1558655146-364adaf1fcc9?w=800&h=600&fit=crop" alt="Brand Identity">
+                        <div class="portfolio-overlay">
+                            <h3>Mindful Living</h3>
+                            <p>Holistic Brand Identity</p>
+                            <span class="category">Branding</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="portfolio-item" data-category="wellness" data-aos="fade-up" data-aos-delay="100">
+                    <a href="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop" data-lightbox="portfolio" data-title="Serene Retreat - Spa & Wellness Branding">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop" alt="Wellness Branding">
+                        <div class="portfolio-overlay">
+                            <h3>Serene Retreat</h3>
+                            <p>Spa & Wellness Branding</p>
+                            <span class="category">Wellness</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="portfolio-item" data-category="web" data-aos="fade-up" data-aos-delay="200">
+                    <a href="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop" data-lightbox="portfolio" data-title="Digital Wellness Hub - E-commerce Platform">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop" alt="E-commerce">
+                        <div class="portfolio-overlay">
+                            <h3>Digital Wellness Hub</h3>
+                            <p>E-commerce Platform</p>
+                            <span class="category">Web</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Journal Section -->
+    <section class="journal">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>From Our Journal</h2>
+                <p>Insights, stories, and creative explorations</p>
+            </div>
+            <div class="journal-grid">
+                <div class="journal-item" data-aos="fade-up">
+                    <div class="journal-image">
+                        <img src="https://images.unsplash.com/photo-1486312338219-ce68e2c6f44d?w=600&h=400&fit=crop" alt="Design Thinking">
+                    </div>
+                    <div class="journal-content">
+                        <div class="journal-meta">March 15, 2026 • Design Process</div>
+                        <h3>The Power of Design in Healing</h3>
+                        <p>How intentional design can create spaces of safety and transformation in therapeutic environments...</p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </div>
+                </div>
+                <div class="journal-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="journal-image">
+                        <img src="https://images.unsplash.com/photo-1553729784-e91953dec042?w=600&h=400&fit=crop" alt="Color Psychology">
+                    </div>
+                    <div class="journal-content">
+                        <div class="journal-meta">February 28, 2026 • Color Theory</div>
+                        <h3>Colors That Heal: Understanding Emotional Design</h3>
+                        <p>Exploring the psychological impact of color palettes in wellness branding and therapeutic spaces...</p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>Stone & Dawn</h3>
+                <p>A creative practice rooted in trauma-informed healing, emotional wellness, and personal transformation through design and storytelling.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="#philosophy">Philosophy</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="portfolio.html">Portfolio</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="#">Newsletter</a></li>
+                    <li><a href="#">Journal</a></li>
+                    <li><a href="#">Resources</a></li>
+                    <li><a href="#">Inquiries</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Stone & Dawn. All rights reserved.</p>
+            <p class="developer-credit">Website crafted with care by Afaq Ahmad</p>
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <div class="chatbot">
+        <button class="chatbot-button" id="chatbot-toggle"><i class="fas fa-comments"></i></button>
+        <div class="chat-window" id="chat-window">
+            <div class="chat-header">
+                <h4>Chat with Stone & Dawn</h4>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <p><strong>Bot:</strong> Hello! Interested in our portfolio? Let's discuss your project!</p>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chat-input" placeholder="Type your message...">
+                <button id="send-button">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+    <script>
+        AOS.init();
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Portfolio Filter
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.getAttribute('data-filter');
+                
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Filter items
+                portfolioItems.forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Chatbot
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatWindow = document.getElementById('chat-window');
+        const chatInput = document.getElementById('chat-input');
+        const sendButton = document.getElementById('send-button');
+        const chatMessages = document.getElementById('chat-messages');
+
+        chatbotToggle.addEventListener('click', () => {
+            chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
+        });
+
+        sendButton.addEventListener('click', () => {
+            const message = chatInput.value.trim();
+            if (message) {
+                chatMessages.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+                chatInput.value = '';
+                // Simple bot response
+                setTimeout(() => {
+                    chatMessages.innerHTML += `<p><strong>Bot:</strong> Thanks for your interest in our work! We'll be in touch soon.</p>`;
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+            }
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendButton.click();
+            }
+        });
+    </script>
+</body>
+
+</html>
